@@ -1,0 +1,18 @@
+﻿@model IEnumerable<WebApplication.Web.Models.Article.ShortArticleViewModel>
+
+@{
+    ViewBag.Title = "ViewArticlesByCategory";
+}
+
+@foreach (var item in Model) {
+    <div class="row jumbotron" style="background-color: #808080">
+        <div class="col-sm-4">
+            <img id="Image" name="Image" style="width: 20vw;" src="/Articles/@item.Id/image.png" />
+        </div>
+        <div class="col-sm-8">
+            @Html.DisplayFor(modelItem => item.Header)
+            @Html.DisplayFor(modelItem => item.Author)
+        </div>
+    </div>
+    <hr />
+}

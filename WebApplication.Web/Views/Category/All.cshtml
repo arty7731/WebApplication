@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebApplication.Web.Models.Category.ShortCategoryViewModel>
+
+@{
+    ViewBag.Title = "All";
+}
+
+@helper BuildMenu(IEnumerable<WebApplication.Web.Models.Category.ShortCategoryViewModel> data, int? parentId = null)
+{
+var items = data.Where(d => d.CategoryParent == parentId);
+if (items.Any())
+{
+        <ul>
+            @foreach (var item in items)
+            {
+                <li>
+                    <a href="/article/Category/@item.Id" style="font-size: larger">@item.Name</a>
+                    @BuildMenu(data, item.Id)
+                </li>
+            }
+        </ul>
+}
+}
+
+<div style="margin: 20px">
+    @BuildMenu(Model, 0)
+</div>

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WebApplication.Web.Models.Article.ShortArticleViewModel>
+
+@{
+    ViewBag.Title = "Sandbox";
+}
+
+<div class="row" style="margin-top: 10px">
+    <p class="alert alert-danger">
+        Warning! <br /> These articles are not yet verified.
+    </p>
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="row jumbotron" style="background-color: #808080">
+        <a href="@Url.Action("ViewArticle", "article", new { id = item.Id})">
+            <div class="col-sm-4">
+                <img id="Image" name="Image" style="width: 20vw;" src="/Articles/@item.Id/image.png" />
+            </div>
+            <div class="col-sm-8">
+                @Html.DisplayFor(modelItem => item.Header)
+                @Html.DisplayFor(modelItem => item.Author)
+            </div>
+
+        </a>
+    </div>
+    <hr />
+}

@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/bundles/summernote")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div style="margin-top: 10px;">
+        @RenderSection("carousel", false)
+    </div>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Blog", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Articles", "ViewTopArticles", "Article")</li>
+                    <li>@Html.ActionLink("Category", "All", "Category")</li>
+                    <li>@Html.ActionLink("Sandbox", "ViewSandbox", "Article")</li>
+                    @if (UserMng.Current.IsSignIn)
+                    {
+                        <li>@Html.ActionLink("Create Article", "Create", "Article")</li>
+                    }
+                    @if (UserMng.Current.IsAdmin)
+                    {
+                        <li>@Html.ActionLink("Control Panel", "Index", "Admin")</li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (UserMng.Current.IsSignIn)
+                    {
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Hello, @UserMng.Current.FullName</a></li>
+                        <li><a href="@Url.Action("LogOut", "User")">LogOut</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("SignUp", "User")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="@Url.Action("SignIn", "User")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        @RenderSection("foter", required: false)
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/summernote_js")
+    @Scripts.Render("~/bundles/dropzone")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

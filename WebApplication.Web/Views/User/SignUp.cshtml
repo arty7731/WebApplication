@@ -1,0 +1,71 @@
+﻿@model WebApplication.Web.Models.User.Response.SignUpResponse
+@{
+    ViewBag.Title = "SignUp";
+}
+
+<div class="container">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">Welcome!</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="main-login main-center-register">
+            @using (Html.BeginForm("signUp", "User", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.Error
+                    </div>
+                }
+                <input type="hidden" name="sessionId" id="sessionId" />
+                <input type="hidden" name="roleId" id="roleId"/>
+                <div class="form-group">
+                    <label for="fullname" class="cols-sm-2 control-label">FullName</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" value="@Model.FullName" name="fullname" id="fullname" placeholder="Enter your FullName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nickname" class="cols-sm-2 control-label">Nickname</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-child fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" value="@Model.Nickname" name="nickname" id="nickname" placeholder="Enter your Nickname" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="email" class="form-control" value="@Model.Email" name="email" id="email" placeholder="Enter your Email" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" value="@Model.Password" name="password" id="password" placeholder="Enter your Password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-primary btn-md btn-block login-button">Sign up</button>
+                </div>
+                <div class="login-register">
+                    <a href="@(Url.Action("SignIn", "User"))">Sign in</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

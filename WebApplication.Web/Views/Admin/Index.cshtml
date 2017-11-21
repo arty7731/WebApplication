@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WebApplication.Web.Models.Admin.UserModelView>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User Managment</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nickname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            Role
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nickname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DropDownListFor(modelItem => item.RoleId, ViewBag.Roles as SelectList, new {tag = item.Id, Id = "roles" + item.Id, @class = "form-control" })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section scripts
+{
+    <script>
+         $(document).ready(function () {
+             $("[Id^='roles']").each(function () {
+                 console.log(this);
+                 $(this).change(function () {
+                     $.post("/admin/changeRole",
+                         {
+                             Id: $(this).attr("tag"),
+                             RoleId: $(this).find(":selected").val()
+                         });
+                 })
+             });
+         });
+    </script>
+}

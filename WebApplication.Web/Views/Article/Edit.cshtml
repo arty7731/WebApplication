@@ -1,0 +1,99 @@
+﻿@model WebApplication.Web.Models.Article.Response.ArticleResponse
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<div class="row" style="margin-top: 10px">
+    <div class="col-sm-8">
+        @using (Html.BeginForm("edit", "article", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.Error
+                </div>
+            }
+            <div class="form-horizontal">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.CountRating)
+                @Html.HiddenFor(model => model.CountView)
+                @Html.HiddenFor(model => model.Rating)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Header, htmlAttributes: new { @class = "" })
+                        @Html.EditorFor(model => model.Header, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "" })
+                    @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <img id="Image" name="Image" src="/Articles/@Model.Id/image.png" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" id="form-submit" class="btn btn-sm btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-sm-4">
+        <div class="jumbotron">
+            <form action="@Url.Action("SaveImage", "Article", new { id = Model.Id})" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm" style="width: 50px; background: none; border: none;">
+                <div class="fallback">
+                    <input name="image" type="file" />
+                    <input type="submit" value="Upload" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function() {
+        $('#Body').summernote({
+            minHeight: 200,
+            callbacks: {
+                onKeyup: function (e) {
+                    $('#Body').val($('#Body').summernote('code'));
+                }
+            }
+        });
+
+        $('#Body').summernote('code', $("#Body").val());
+
+        Dropzone.options.dropzoneForm = {
+            uploadMultiple: false,
+            maxFiles: 1,
+            autoProcessQueue: true,
+            addRemoveLinks: false,
+            complete: function () {
+                this.removeAllFiles();
+                $("#Image").attr("src", "/Articles/" + $("#Id").val() + "/image.png?v=" + new Date().getMilliseconds());
+            }
+            //init: function () {
+            //    var submitButton = document.querySelector("#form-submit");
+            //    var myDropzone = this; //closure
+
+            //    submitButton.addEventListener("click", function () {
+
+            //        //tell Dropzone to process all queued files
+            //        myDropzone.processQueue();
+            //    });
+            //}
+
+        };
+    });
+    </script>
+}

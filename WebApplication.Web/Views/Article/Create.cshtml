@@ -1,0 +1,94 @@
+﻿@model WebApplication.Web.Models.Article.Response.ArticleResponse
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row" style="margin-top: 10px">
+        @using (Html.BeginForm("create", "article", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @if (ViewBag.Errors != null)
+                {
+                    <ul>
+                        @foreach (string error in ViewBag.Errors)
+                        {
+                            <li class="text-danger">error</li>
+                        }
+                    </ul>
+                }
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Header, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Header, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Category", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => Model.CategoryId, ViewBag.Categories as SelectList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Logo" class="control-label col-md-2">Prewiew Image</label>
+                    <div class="col-md-10">
+                        <input name="Logo" id="Logo" type="file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function() {
+        $('#Body').summernote({
+            minHeight: 200,
+            callbacks: {
+                onKeyup: function (e) {
+                    $('#Body').val($('#Body').summernote('code'));
+                }
+            }
+        });
+
+        $('#Body').summernote('code', $("#Body").val());
+
+        Dropzone.options.dropzoneForm = {
+            uploadMultiple: false,
+            maxFiles: 1,
+            autoProcessQueue: false,
+            addRemoveLinks: false,
+            complete: function () {
+                this.removeAllFiles();
+            }
+            //init: function () {
+            //    var submitButton = document.querySelector("#form-submit");
+            //    var myDropzone = this; //closure
+
+            //    submitButton.addEventListener("click", function () {
+
+            //        //tell Dropzone to process all queued files
+            //        myDropzone.processQueue();
+            //    });
+            //}
+
+        };
+    });
+    </script>
+}

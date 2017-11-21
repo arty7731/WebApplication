@@ -1,0 +1,29 @@
+﻿@model WebApplication.Web.Models.Article.Request.ArticleRequest
+@{
+    ViewBag.Title = "ViewArticle";
+}
+
+<div class="jumbotron" style="border: 1px  #575757; margin-top: 10px">
+    <div class="row">
+        <h2>@Model.Header</h2>
+    </div>
+    <hr />
+    <div class="row">
+            <h5>Author:</h5>
+            @Model.Author.FullName
+        @if(Model.Author.Id == UserMng.Current.Id)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+        }
+        @if (UserMng.Current != null 
+            && (UserMng.Current.Role == WebApplication.Core.Enums.RoleType.Manager 
+            || UserMng.Current.IsAdmin)
+            && Model.Status == WebApplication.Core.Enums.ArticleType.Sandbox)
+        {
+            <a href="@Url.Action("Verified", "Article", new { Id = Model.Id})" class="btn btn-xs btn-success">Verified</a>
+        }
+    </div>
+    <hr />
+    <p>@Html.Raw(Model.Body)</p>
+</div>
+
